@@ -6,7 +6,7 @@ import functools
 import os,sys
 
 '''
-p3 demultiplex.py data/w1118_dpse_dvir_f_ac_r1.mapped.sorted.bam dmel_dpse_dvir_ERCC
+python2 demultiplex.py data/w1118_dpse_dvir_f_ac_r1.mapped.sorted.bam dmel_dpse_dvir_ERCC
 '''
 
 def get_speciesList(speciesType):
@@ -37,13 +37,15 @@ def demultiplx_bam_file(bamfile, speciesType):
     for line in pH.stdout:
         print(line)
         for species in speciesList:
-            outFileHandles[species].write(line)
+            print(species)
+            outFileHandles[species].write(str(line))
     
     """ add content to each categorized sam file """
     this_multihit_query_name = ''
     for line in p.stdout:
         print(line)
-        lst = line.rstrip().split()
+        lst = str(line).rstrip().split()
+        print(lst)
         query_name = lst[0]
         chrom = lst[2]
         if chrom.startswith("ERCC"):
@@ -53,7 +55,7 @@ def demultiplx_bam_file(bamfile, speciesType):
             species = temp[0]
         sequence = lst[9]
         quality = lst[10]
-        NH = int(lst[11].replace("NH:i:",""))
+        NH = int(lst[-1].replace("NH:i:",""))
 
         """ if mapped to multiple position """
         if NH > 1:
