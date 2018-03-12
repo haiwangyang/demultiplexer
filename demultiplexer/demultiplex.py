@@ -4,6 +4,7 @@ from Bio import SeqIO
 from subprocess import Popen, PIPE
 import functools
 import os,sys
+import download
 
 '''
 python2 demultiplex.py data/w1118_dpse_dvir_f_ac_r1.mapped.sorted.bam dmel_dpse_dvir_ERCC
@@ -91,6 +92,7 @@ def demultiplx_bam_file(bamfile, speciesType):
 def main():
     bamfile = sys.argv[1]
     speciesType = sys.argv[2]
+    download.fetch_binary_file_from_helix_ftp(bamfile)
     demultiplx_bam_file(bamfile, speciesType)
 
 if __name__ == '__main__':
