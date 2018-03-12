@@ -28,18 +28,21 @@ def demultiplx_bam_file(bamfile, speciesType):
     outFileHandles = {}
     for species in speciesList:
         outFile = bamfile.replace("bam", species + ".unique_plus_spspmulti.sam")
+        print(outFile)
         outFileHandles[species] =  open(outFile, 'w')
     p = Popen(['samtools', 'view', bamfile], stdout=PIPE)
     
     """ add header to each categorized sam file """
     pH = Popen(['samtools', 'view', "-H", bamfile], stdout=PIPE)
     for line in pH.stdout:
+        print(line)
         for species in speciesList:
             outFileHandles[species].write(line)
     
     """ add content to each categorized sam file """
     this_multihit_query_name = ''
     for line in p.stdout:
+        print(line)
         lst = line.rstrip().split()
         query_name = lst[0]
         chrom = lst[2]
